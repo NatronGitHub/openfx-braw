@@ -4,3 +4,6 @@
 [submodule "io"]
 	path = io
 	url = https://github.com/rodlie/openfx-io
+[submodule "ext"]
+	path = ext
+	url = https://github.com/NatronGitHub/openfx-supportext
