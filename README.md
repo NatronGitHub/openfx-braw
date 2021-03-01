@@ -1,8 +1,6 @@
-# Blackmagick RAW
+# Blackmagick RAW for Natron
 
-Blackmagic RAW is a modern, high performance, professional RAW codec that is open, cross platform and free.
-
-*This plugin require a proprietary library available during runtime, it does not violate the GPL since we don't link against it, so it should be legal to distribute them together.*
+Blackmagic RAW is a modern, high performance, professional RAW codec that is open, cross platform and free. Now available for Natron.
 
 ## Supported cameras:
 
@@ -17,7 +15,8 @@ Blackmagic RAW is a modern, high performance, professional RAW codec that is ope
 ## Build
 
 ```
+git clone https://github.com/rodlie/openfx-braw
+cd openfx-braw
+git submodule update -i --recursive
 make CONFIG=release
 ```
-
-Note that the plugin expects ``libBlackmagicRawAPI.so`` or ``BlackmagicRawAPI.dll`` or ``BlackmagicRawAPI.framework`` in ``BlackmagicRAW.ofx.bundle/Contents/Resources/BlackmagicRAW/`` depending on your platform.
