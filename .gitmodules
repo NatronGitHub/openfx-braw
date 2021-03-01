@@ -1,3 +1,6 @@
 [submodule "ofx"]
 	path = ofx
 	url = https://github.com/NatronGitHub/openfx
+[submodule "io"]
+	path = io
+	url = https://github.com/rodlie/openfx-io
