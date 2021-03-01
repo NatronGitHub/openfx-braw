@@ -2,6 +2,8 @@
 
 Blackmagic RAW is a modern, high performance, professional RAW codec that is open, cross platform and free. Now available for Natron.
 
+![Screenshot](screenshot.png)
+
 ## Supported cameras:
 
  * Blackmagic Design Pocket Cinema Camera 4K
