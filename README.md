@@ -1,4 +1,4 @@
-# Blackmagick RAW for Natron
+# OpenFX-BRAW
 
 Blackmagic RAW is a modern, high performance, professional RAW codec that is open, cross platform and free. Now available for Natron.
 
