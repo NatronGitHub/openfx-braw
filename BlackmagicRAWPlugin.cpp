@@ -48,7 +48,7 @@
     " - Canon EOS C300 Mark II captured by Blackmagic Video Assist 12G HDR\n" \
     " - Panasonic EVA1 captured by Blackmagic Video Assist 12G HDR\n" \
     " - Sigma fp captured by Blackmagic Video Assist 12G HDR\n" \
-    " - Nikon Z 6 and Z 7 captured by Blackmagic Video Assist 12G HDR\n\n" \
+    " - Nikon Z 6 and Z 7 captured by Blackmagic Video Assist 12G HDR\n" \
     " - Nikon Z 6II and Z 7II captured by Blackmagic Video Assist 12G HDR\n\n" \
     "OpenFX plug-in written by Ole-André Rodlie\n\nhttps://rodlie.github.io/openfx-braw\n\n"
 
