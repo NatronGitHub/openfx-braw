@@ -38,7 +38,7 @@ Blackmagic RAW SDK must be installed before usage.
 
 Download [latest release](https://github.com/rodlie/openfx-braw/releases) of OpenFX-BRAW and a version of the Blackmagic RAW SDK. Install the SDK using the installer, then extract the OpenFX-BRAW zip file and copy ``BlackmagicRAW.ofx.bundle`` to the Natron OFX plug-in folder.
 
-In Natron you will now have a new node in ``Image/Readers/BlackmagicRAW``. Use that one when you need to read a BRAW file.
+In Natron you will now have a new node in ``Image/Readers/BlackmagicRAW`` for reading BRAW files.
 
 ## Status
 
