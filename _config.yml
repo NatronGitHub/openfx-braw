@@ -2,3 +2,5 @@ theme: jekyll-theme-tactile
 show_downloads: true
 title: Blackmagic RAW Reader for Natron
 description: Blackmagic RAW Reader for Natron
+github:
+  zip_url: https://github.com/rodlie/openfx-braw/releases/download/Natron-2.4.0/openfx-braw-Natron-2.4.0-Win64.zip
