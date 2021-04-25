@@ -2,7 +2,7 @@
 BLACKMAGICRAWOFX
 ############################################################################################################################
 
-Copyright (C) 2020 Ole-André Rodlie <ole.andre.rodlie@gmail.com>
+Copyright (C) 2020, 2021 Ole-André Rodlie <ole.andre.rodlie@gmail.com>
 
 BlackmagicRAWOFX is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License version 2 as published
@@ -18,10 +18,10 @@ You should have received a copy of the GNU General Public License
 along with openfx-arena.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>
 
 ############################################################################################################################
-OPENFX-IO
+OPENFX-IO/OPENFX-SUPPORTEXT
 ############################################################################################################################
 
-(C) 2018-2020 The Natron Developers
+(C) 2018-2021 The Natron Developers
 (C) 2013-2018 INRIA
 
 openfx-io is free software: you can redistribute it and/or modify
