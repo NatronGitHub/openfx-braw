@@ -26,11 +26,13 @@
 #include "GenericOCIO.h"
 #include "ofxsImageEffect.h"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #define kPluginName "BlackmagicRAWOFX"
 #define kPluginGrouping "Image/Readers"
 #define kPluginIdentifier "net.sf.openfx.BlackmagicRAW"
 
-// keep version in sync with SDK
 #define kPluginVersionMajor 1
 #define kPluginVersionMinor 8
 #define kPluginEvaluation 0
@@ -42,9 +44,13 @@
     " - Blackmagic Design URSA Mini Pro G2\n" \
     " - Blackmagic Design Pocket Cinema Camera 6K\n" \
     " - Blackmagic URSA Broadcast\n" \
+    " - Blackmagic URSA Mini Pro 12K\n" \
     " - Canon EOS C300 Mark II captured by Blackmagic Video Assist 12G HDR\n" \
     " - Panasonic EVA1 captured by Blackmagic Video Assist 12G HDR\n" \
-    " - Sigma fp captured by Blackmagic Video Assist 12G HDR\n\n" \
+    " - Sigma fp captured by Blackmagic Video Assist 12G HDR\n" \
+    " - Nikon Z 6 and Z 7 captured by Blackmagic Video Assist 12G HDR\n\n" \
+    " - Nikon Z 6II and Z 7II captured by Blackmagic Video Assist 12G HDR\n\n" \
+    "OpenFX plug-in written by Ole-André Rodlie\n\nhttps://rodlie.github.io/openfx-braw\n\n"
 
 #define kParamISO "iso"
 #define kParamISOLabel "ISO"
@@ -161,6 +167,7 @@ private:
                               double* fps) const override final;
     virtual bool getSequenceTimeDomain(const std::string& filename,
                                        OfxRangeI &range) override final;
+    static bool isDir(const std::string &path);
     static const std::string getLibraryPath();
     void clearCache();
 
@@ -514,11 +521,19 @@ bool BlackmagicRAWPlugin::getSequenceTimeDomain(const std::string &filename,
     return true;
 }
 
+bool BlackmagicRAWPlugin::isDir(const std::string &path)
+{
+    struct stat info;
+    if (stat(path.c_str(), &info) != 0) { return false; }
+    if (info.st_mode & S_IFDIR) { return true; }
+    return false;
+}
 const std::string BlackmagicRAWPlugin::getLibraryPath()
 {
-    std::string result;// = ofxPath;
-    //result.append("/Contents/Resources/BlackmagicRAW");
-    // we require the official sdk being installed, that way we don't need to distribute the libraries
+    std::string result;
+    std::string bundle = ofxPath;
+    bundle.append("/Contents/Resources/BlackmagicRAW");
+    if (isDir(bundle)) { return bundle; }
 #ifdef _WIN32
     char const* pfiles = getenv("ProgramFiles");
     if (pfiles == nullptr) { return result; }
