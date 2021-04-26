@@ -44,13 +44,12 @@
     " - Blackmagic Design URSA Mini Pro G2\n" \
     " - Blackmagic Design Pocket Cinema Camera 6K\n" \
     " - Blackmagic URSA Broadcast\n" \
-    " - Blackmagic URSA Mini Pro 12K\n" \
+    " - Blackmagic URSA Mini Pro 12K (BRAW 2.0+)\n" \
     " - Canon EOS C300 Mark II captured by Blackmagic Video Assist 12G HDR\n" \
     " - Panasonic EVA1 captured by Blackmagic Video Assist 12G HDR\n" \
     " - Sigma fp captured by Blackmagic Video Assist 12G HDR\n" \
     " - Nikon Z 6 and Z 7 captured by Blackmagic Video Assist 12G HDR\n" \
-    " - Nikon Z 6II and Z 7II captured by Blackmagic Video Assist 12G HDR\n\n" \
-    "OpenFX plug-in written by Ole-André Rodlie\n\nhttps://rodlie.github.io/openfx-braw\n\n"
+    " - Nikon Z 6II and Z 7II captured by Blackmagic Video Assist 12G HDR (BRAW 2.0+)\n\n"
 
 #define kParamISO "iso"
 #define kParamISOLabel "ISO"
