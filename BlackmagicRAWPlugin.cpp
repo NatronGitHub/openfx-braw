@@ -446,17 +446,19 @@ bool BlackmagicRAWPlugin::getFrameBounds(const std::string& filename,
             }
         }
     }
-    if (width > 0 && height > 0) {
-        bounds->x1 = 0;
-        bounds->x2 = width;
-        _bounds.x2 = width; // cache
-        bounds->y1 = 0;
-        bounds->y2 = height;
-        _bounds.y2 = height; // cache
-        *format = *bounds;
-        *par = 1.0;
+    if (width <= 0 || height <= 0) {
+        return false;
     }
+    bounds->x1 = 0;
+    bounds->x2 = width;
+    _bounds.x2 = width; // cache
+    bounds->y1 = 0;
+    bounds->y2 = height;
+    _bounds.y2 = height; // cache
+    *format = *bounds;
+    *par = 1.0;
     *tile_width = *tile_height = 0;
+
     return true;
 }
 
@@ -540,7 +542,7 @@ const std::string BlackmagicRAWPlugin::getLibraryPath()
     result = pfiles;
     result.append("\\Adobe\\Common\\Plug-ins\\7.0\\MediaCore\\BlackmagicRawAPI");
 #elif __APPLE__
-    result = "/Applications/Blackmagic\\ RAW/Blackmagic\\ RAW\\ SDK/Mac/Libraries";
+    result = "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries";
 #else
     result = "/usr/lib/blackmagic/BlackmagicRAWSDK/Linux/Libraries";
 #endif
