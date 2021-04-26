@@ -438,9 +438,7 @@ void BlackmagickRAWRendererCallback::ReadComplete(IBlackmagicRawJob *readJob,
         gamut.bstrVal = bgamut;
         SysFreeString(bgamut);
 #elif __APPLE__
-        CFStringRef cfgamut = CFStringCreateWithCString(kCFAllocatorDefault, specs.gamut.c_str(), kCFStringEncodingUTF8);
-        gamut.bstrVal = cfgamut;
-        CFRelease(cfgamut);
+        gamut.bstrVal = CFStringCreateWithCString(NULL, specs.gamut.c_str(), kCFStringEncodingUTF8);
 #else
         gamut.bstrVal = specs.gamut.c_str();
 #endif
@@ -457,9 +455,7 @@ void BlackmagickRAWRendererCallback::ReadComplete(IBlackmagicRawJob *readJob,
         gamma.bstrVal = bgamma;
         SysFreeString(bgamma);
 #elif __APPLE__
-        CFStringRef cfgamma = CFStringCreateWithCString(kCFAllocatorDefault, specs.gamma.c_str(), kCFStringEncodingUTF8);
-        gamma.bstrVal = cfgamma;
-        CFRelease(cfgamma);
+        gamma.bstrVal =  CFStringCreateWithCString(kCFAllocatorDefault, specs.gamma.c_str(), kCFStringEncodingUTF8);
 #else
         gamma.bstrVal = specs.gamma.c_str();
 #endif
@@ -525,6 +521,9 @@ void BlackmagickRAWRendererCallback::ReadComplete(IBlackmagicRawJob *readJob,
 
     // set quality (scale)
     switch (specs.quality) {
+    case BlackmagicRAWHandler::rawFullQuality:
+        result = frame->SetResolutionScale(blackmagicRawResolutionScaleFullUpsideDown);
+        break;
     case BlackmagicRAWHandler::rawHalfQuality:
         result = frame->SetResolutionScale(blackmagicRawResolutionScaleHalfUpsideDown);
         break;
@@ -535,7 +534,7 @@ void BlackmagickRAWRendererCallback::ReadComplete(IBlackmagicRawJob *readJob,
         result = frame->SetResolutionScale(blackmagicRawResolutionScaleEighthUpsideDown);
         break;
     default:
-        result = frame->SetResolutionScale(blackmagicRawResolutionScaleFullUpsideDown);
+        result = E_INVALIDARG;
     }
 
     // setup and run job
