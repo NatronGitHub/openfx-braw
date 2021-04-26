@@ -644,7 +644,7 @@ void BlackmagicRAWPluginFactory::load()
 {
     _extensions.clear();
     _extensions.push_back("braw");
-    _extensions.push_back("sidecar");
+    //_extensions.push_back("sidecar");
 }
 
 void BlackmagicRAWPluginFactory::describe(ImageEffectDescriptor &desc)
