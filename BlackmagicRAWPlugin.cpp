@@ -168,9 +168,8 @@ private:
                                        OfxRangeI &range) override final;
     static bool isDir(const std::string &path);
     static const std::string getLibraryPath();
-    void clearCache();
 
-    OfxRectI _bounds;
+    BlackmagicRAWHandler::BlackmagicRAWSpecs _specs;
     ChoiceParam *_iso;
     ChoiceParam *_gamma;
     ChoiceParam *_gamut;
@@ -212,8 +211,6 @@ BlackmagicRAWPlugin::BlackmagicRAWPlugin(OfxImageEffectHandle handle,
 , _videoBlackLevel(nullptr)
 , _quality(nullptr)
 {
-    clearCache();
-
     _iso = fetchChoiceParam(kParamISO);
     _gamma = fetchChoiceParam(kParamGamma);
     _gamut = fetchChoiceParam(kParamGamut);
@@ -378,10 +375,7 @@ BlackmagicRAWPlugin::decode(const std::string& filename,
         if (clip != nullptr) { clip->Release(); }
         if (codec != nullptr) { codec->Release(); }
         if (factory != nullptr) { factory->Release(); }
-        std::string errorMsg = "Unable to render image";
-        if (_bounds.x2 > 12000) {
-            errorMsg.append(", 12k footage is currently not supported.");
-        }
+        std::string errorMsg = "Unable to render image. Note that some footage may not be supported at the moment.";
         setPersistentMessage(Message::eMessageError, "", errorMsg);
         throwSuiteStatusException(kOfxStatErrFormat);
         return;
@@ -406,7 +400,7 @@ BlackmagicRAWPlugin::decode(const std::string& filename,
     buffer = nullptr;
 }
 
-bool BlackmagicRAWPlugin::getFrameBounds(const std::string& filename,
+bool BlackmagicRAWPlugin::getFrameBounds(const std::string& /*filename*/,
                                          OfxTime /*time*/,
                                          int /*view*/,
                                          OfxRectI *bounds,
@@ -416,37 +410,25 @@ bool BlackmagicRAWPlugin::getFrameBounds(const std::string& filename,
                                          int *tile_width,
                                          int *tile_height)
 {
-    int width = 0;
-    int height = 0;
-    if (_bounds.x2 > 0 && _bounds.y2 > 0) { // use cache since this function run several time for each frame
-        width = _bounds.x2;
-        height = _bounds.y2;
-    }
-    if (width == 0 && height == 0) {
-        BlackmagicRAWHandler::BlackmagicRAWSpecs specs;
-        specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
-        int clipWidth = specs.width;
-        int clipHeight = specs.height;
-        if (clipWidth > 0 && clipHeight > 0) {
-            int quality;
-            _quality->getValue(quality);
-            switch (quality) {
-            case BlackmagicRAWHandler::rawHalfQuality:
-                width = (int)clipWidth/2;
-                height = (int)clipHeight/2;
-                break;
-            case BlackmagicRAWHandler::rawQuarterQuality:
-                width = (int)clipWidth/4;
-                height = (int)clipHeight/4;
-                break;
-            case BlackmagicRAWHandler::rawEighthQuality:
-                width = (int)clipWidth/8;
-                height = (int)clipHeight/8;
-                break;
-            default:
-                width = (int)clipWidth;
-                height = (int)clipHeight;
-            }
+    int width = _specs.width;
+    int height = _specs.height;
+    if (width > 0 && height > 0) {
+        int quality;
+        _quality->getValue(quality);
+        switch (quality) {
+        case BlackmagicRAWHandler::rawHalfQuality:
+            width = (int)width/2;
+            height = (int)height/2;
+            break;
+        case BlackmagicRAWHandler::rawQuarterQuality:
+            width = (int)width/4;
+            height = (int)height/4;
+            break;
+        case BlackmagicRAWHandler::rawEighthQuality:
+            width = (int)width/8;
+            height = (int)height/8;
+            break;
+        default:;
         }
     }
     if (width <= 0 || height <= 0) {
@@ -454,10 +436,8 @@ bool BlackmagicRAWPlugin::getFrameBounds(const std::string& filename,
     }
     bounds->x1 = 0;
     bounds->x2 = width;
-    _bounds.x2 = width; // cache
     bounds->y1 = 0;
     bounds->y2 = height;
-    _bounds.y2 = height; // cache
     *format = *bounds;
     *par = 1.0;
     *tile_width = *tile_height = 0;
@@ -504,23 +484,21 @@ bool BlackmagicRAWPlugin::guessParamsFromFilename(const std::string& /*filename*
 bool BlackmagicRAWPlugin::getFrameRate(const std::string &filename,
                                        double *fps) const
 {
+    std::cout << "getFrameRate " << filename << std::endl;
     assert(fps);
-    BlackmagicRAWHandler::BlackmagicRAWSpecs specs;
-    specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
-    *fps = specs.fps;
+    *fps = _specs.fps;
     return true;
 }
 
 bool BlackmagicRAWPlugin::getSequenceTimeDomain(const std::string &filename,
                                                 OfxRangeI &range)
 {
-    //std::cout << "getSequenceTimeDomain " << filename << std::endl;
+    std::cout << "getSequenceTimeDomain " << filename << std::endl;
     if (!filename.empty()) {
-        BlackmagicRAWHandler::BlackmagicRAWSpecs specs;
-        specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
-        if (specs.frameMax > 0) {
+        _specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
+        if (_specs.frameMax > 0) {
             range.min = 1;
-            range.max = specs.frameMax;
+            range.max = _specs.frameMax;
         }
     }
     return true;
@@ -552,36 +530,24 @@ const std::string BlackmagicRAWPlugin::getLibraryPath()
     return result;
 }
 
-void BlackmagicRAWPlugin::clearCache()
-{
-    _bounds.x1 = 0;
-    _bounds.x2 = -1;
-    _bounds.y1 = 0;
-    _bounds.y2 = -1;
-}
 void BlackmagicRAWPlugin::changedParam(const InstanceChangedArgs &args,
                                        const std::string &paramName)
 {
-    if (paramName == kParamQuality) {
-        clearCache();
-    }
-    else { GenericReaderPlugin::changedParam(args, paramName); }
+    GenericReaderPlugin::changedParam(args, paramName);
 }
 
 void BlackmagicRAWPlugin::restoreStateFromParams()
 {
-    clearCache();
     std::string filename;
     _fileParam->getValue(filename);
     if (!filename.empty()) {
-        BlackmagicRAWHandler::BlackmagicRAWSpecs specs;
-        specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
+        _specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
 
-        _iso->resetOptions(specs.availableISO);
-        if (specs.iso > 0) {
-            for (uint32_t i = 0; i < specs.availableISO.size(); ++i) {
-                int currentISO = std::stoi(specs.availableISO.at(i));
-                if ( currentISO == specs.iso) {
+        _iso->resetOptions(_specs.availableISO);
+        if (_specs.iso > 0) {
+            for (uint32_t i = 0; i < _specs.availableISO.size(); ++i) {
+                int currentISO = std::stoi(_specs.availableISO.at(i));
+                if ( currentISO == _specs.iso) {
                     _iso->setDefault(i);
                     _iso->resetToDefault();
                     break;
@@ -589,10 +555,10 @@ void BlackmagicRAWPlugin::restoreStateFromParams()
             }
         }
 
-        _gamma->resetOptions(specs.availableGamma);
-        if (!specs.gamma.empty()) {
-            for (uint32_t i = 0; i < specs.availableGamma.size(); ++i) {
-                if (specs.availableGamma.at(i) == specs.gamma) {
+        _gamma->resetOptions(_specs.availableGamma);
+        if (!_specs.gamma.empty()) {
+            for (uint32_t i = 0; i < _specs.availableGamma.size(); ++i) {
+                if (_specs.availableGamma.at(i) == _specs.gamma) {
                     _gamma->setDefault(i);
                     _gamma->resetToDefault();
                     break;
@@ -600,10 +566,10 @@ void BlackmagicRAWPlugin::restoreStateFromParams()
             }
         }
 
-        _gamut->resetOptions(specs.availableGamut);
-        if (!specs.gamut.empty()) {
-            for (uint32_t i = 0; i < specs.availableGamut.size(); ++i) {
-                if (specs.availableGamut.at(i) == specs.gamut) {
+        _gamut->resetOptions(_specs.availableGamut);
+        if (!_specs.gamut.empty()) {
+            for (uint32_t i = 0; i < _specs.availableGamut.size(); ++i) {
+                if (_specs.availableGamut.at(i) == _specs.gamut) {
                     _gamut->setDefault(i);
                     _gamut->resetToDefault();
                     break;
@@ -611,32 +577,32 @@ void BlackmagicRAWPlugin::restoreStateFromParams()
             }
         }
 
-        _colorTemp->setDefault(specs.colorTemp);
-        _colorTemp->setValue(specs.colorTemp);
+        _colorTemp->setDefault(_specs.colorTemp);
+        _colorTemp->setValue(_specs.colorTemp);
 
-        _tint->setDefault(specs.tint);
-        _tint->setValue(specs.tint);
+        _tint->setDefault(_specs.tint);
+        _tint->setValue(_specs.tint);
 
-        _exposure->setDefault(specs.exposure);
-        _exposure->setValue(specs.exposure);
+        _exposure->setDefault(_specs.exposure);
+        _exposure->setValue(_specs.exposure);
 
-        _saturation->setDefault(specs.saturation);
-        _saturation->setValue(specs.saturation);
+        _saturation->setDefault(_specs.saturation);
+        _saturation->setValue(_specs.saturation);
 
-        _contrast->setDefault(specs.contrast);
-        _contrast->setValue(specs.contrast);
+        _contrast->setDefault(_specs.contrast);
+        _contrast->setValue(_specs.contrast);
 
-        _midpoint->setDefault(specs.midpoint);
-        _midpoint->setValue(specs.midpoint);
+        _midpoint->setDefault(_specs.midpoint);
+        _midpoint->setValue(_specs.midpoint);
 
-        _highlights->setDefault(specs.highlights);
-        _highlights->setValue(specs.highlights);
+        _highlights->setDefault(_specs.highlights);
+        _highlights->setValue(_specs.highlights);
 
-        _shadows->setDefault(specs.shadows);
-        _shadows->setValue(specs.shadows);
+        _shadows->setDefault(_specs.shadows);
+        _shadows->setValue(_specs.shadows);
 
-        _videoBlackLevel->setDefault(specs.videoBlackLevel);
-        _videoBlackLevel->setValue(specs.videoBlackLevel);
+        _videoBlackLevel->setDefault(_specs.videoBlackLevel);
+        _videoBlackLevel->setValue(_specs.videoBlackLevel);
     }
     GenericReaderPlugin::restoreStateFromParams();
 }
@@ -647,7 +613,6 @@ void BlackmagicRAWPluginFactory::load()
 {
     _extensions.clear();
     _extensions.push_back("braw");
-    //_extensions.push_back("sidecar");
 }
 
 void BlackmagicRAWPluginFactory::describe(ImageEffectDescriptor &desc)
