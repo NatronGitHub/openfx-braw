@@ -25,18 +25,20 @@ CXXFLAGS += $(shell pkg-config --cflags OpenColorIO)
 CXXFLAGS += -DOFX_IO_USING_OCIO
 LINKFLAGS += $(shell pkg-config --libs OpenColorIO)
 
+BRAW_VERSION := v1.8
+
 ifeq ($(OS),Linux)
-VPATH += sdk/Linux/Include
-CXXFLAGS += -Isdk/Linux/Include
+VPATH += sdk/Linux/$(BRAW_VERSION)/Include
+CXXFLAGS += -Isdk/Linux/$(BRAW_VERSION)/Include
 LINKFLAGS += -Wl,-rpath,`pkg-config --variable=libdir OpenColorIO`
 endif
 ifeq ($(OS),Darwin)
-VPATH += sdk/Mac/Include
-CXXFLAGS += -Isdk/Mac/Include
+VPATH += sdk/Mac/$(BRAW_VERSION)/Include
+CXXFLAGS += -Isdk/Mac/$(BRAW_VERSION)/Include
 LINKFLAGS += -framework CoreFoundation
 endif
 ifeq ($(OS:MINGW%=MINGW),MINGW)
-VPATH += sdk/Win/Include
-CXXFLAGS += -Isdk/Win/Include
+VPATH += sdk/Win/$(BRAW_VERSION)/Include
+CXXFLAGS += -Isdk/Win/$(BRAW_VERSION)/Include
 LINKFLAGS += -lole32 -loleaut32
 endif
