@@ -484,7 +484,7 @@ bool BlackmagicRAWPlugin::guessParamsFromFilename(const std::string& /*filename*
 bool BlackmagicRAWPlugin::getFrameRate(const std::string &filename,
                                        double *fps) const
 {
-    std::cout << "getFrameRate " << filename << std::endl;
+    //std::cout << "getFrameRate " << filename << std::endl;
     assert(fps);
     *fps = _specs.fps;
     return true;
@@ -526,6 +526,9 @@ const std::string BlackmagicRAWPlugin::getLibraryPath()
     result = "/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries";
 #else
     result = "/usr/lib/blackmagic/BlackmagicRAWSDK/Linux/Libraries";
+    if (!isDir(result)) {
+        result = "/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries";
+    }
 #endif
     return result;
 }
