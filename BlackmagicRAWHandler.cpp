@@ -546,7 +546,10 @@ void BlackmagickRAWRendererCallback::ReadComplete(IBlackmagicRawJob *readJob,
     if (result == S_OK) {
         result = decodeAndProcessJob->Submit();
     }
-    if (result != S_OK){
+    if (result != S_OK) {
+        std::stringstream errorMsg;
+        errorMsg << "decodeAndProcessJob Error code = 0x" << std::hex << result << std::endl;
+        std::cout << errorMsg.str() << std::endl;
         if (decodeAndProcessJob) {
             decodeAndProcessJob->Release();
         }
@@ -562,6 +565,10 @@ void BlackmagickRAWRendererCallback::ProcessComplete(IBlackmagicRawJob *job,
 {
     if (result == S_OK) {
         result = processedImage->GetResource(&frameBuffer);
+    } else {
+        std::stringstream errorMsg;
+        errorMsg << "ProcessComplete Error code = 0x" << std::hex << result << std::endl;
+        std::cout << errorMsg.str() << std::endl;
     }
     job->Release();
 }

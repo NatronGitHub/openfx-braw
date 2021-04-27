@@ -378,7 +378,11 @@ BlackmagicRAWPlugin::decode(const std::string& filename,
         if (clip != nullptr) { clip->Release(); }
         if (codec != nullptr) { codec->Release(); }
         if (factory != nullptr) { factory->Release(); }
-        setPersistentMessage(Message::eMessageError, "", "Unable to read or render image");
+        std::string errorMsg = "Unable to render image";
+        if (_bounds.x2 > 12000) {
+            errorMsg.append(", 12k footage is currently not supported.");
+        }
+        setPersistentMessage(Message::eMessageError, "", errorMsg);
         throwSuiteStatusException(kOfxStatErrFormat);
         return;
     }

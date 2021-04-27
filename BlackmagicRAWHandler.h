@@ -29,6 +29,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #ifdef DEBUG
     #include <cassert>
