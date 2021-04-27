@@ -235,6 +235,10 @@ BlackmagicRAWPlugin::BlackmagicRAWPlugin(OfxImageEffectHandle handle,
     HRESULT result = S_OK;
     result = CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 #endif
+
+    if (!BlackmagicRAWHandler::hasFactory(getLibraryPath())) {
+        setPersistentMessage(Message::eMessageMessage, "", "Blackmagic RAW SDK not found! Please install latest SDK from https://www.blackmagicdesign.com/support/.");
+    }
 }
 
 BlackmagicRAWPlugin::~BlackmagicRAWPlugin()
@@ -495,6 +499,9 @@ bool BlackmagicRAWPlugin::getSequenceTimeDomain(const std::string &filename,
 {
     std::cout << "getSequenceTimeDomain " << filename << std::endl;
     if (!filename.empty()) {
+        if (!BlackmagicRAWHandler::hasFactory(getLibraryPath())) {
+            setPersistentMessage(Message::eMessageMessage, "", "Blackmagic RAW SDK not found! Please install latest SDK from https://www.blackmagicdesign.com/support/.");
+        }
         _specs = BlackmagicRAWHandler::getClipSpecs(filename, getLibraryPath());
         if (_specs.frameMax > 0) {
             range.min = 1;

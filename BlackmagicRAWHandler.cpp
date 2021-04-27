@@ -342,6 +342,29 @@ BlackmagicRAWHandler::getClipSpecs(const std::string &filename,
     return specs;
 }
 
+bool BlackmagicRAWHandler::hasFactory(const std::string &path)
+{
+    bool result = false;
+    if (path.empty()) { return result; }
+    IBlackmagicRawFactory* factory = nullptr;
+#ifdef _WIN32
+    std::wstring wpath(path.begin(), path.end());
+    BSTR libraryPath = SysAllocStringLen(wpath.data(), wpath.size());
+    factory = CreateBlackmagicRawFactoryInstanceFromPath(libraryPath);
+    SysFreeString(libraryPath);
+#elif __APPLE__
+    CFStringRef cfpath = CFStringCreateWithCString(kCFAllocatorDefault, path.c_str(), kCFStringEncodingUTF8);
+    factory = CreateBlackmagicRawFactoryInstanceFromPath(cfpath);
+#else
+    factory = CreateBlackmagicRawFactoryInstanceFromPath(path.c_str());
+#endif
+    if (factory != nullptr) {
+        result = true;
+        factory->Release();
+    }
+    return result;
+}
+
 void BlackmagickRAWSpecsCallback::ReadComplete(IBlackmagicRawJob *readJob,
                                                HRESULT result,
                                                IBlackmagicRawFrame *frame)

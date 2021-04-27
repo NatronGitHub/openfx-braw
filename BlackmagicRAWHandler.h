@@ -78,6 +78,7 @@ public:
     };
     static const BlackmagicRAWSpecs getClipSpecs(const std::string &filename,
                                                  const std::string &path);
+    static bool hasFactory(const std::string &path);
 };
 
 class BlackmagickRAWSpecsCallback : public IBlackmagicRawCallback
