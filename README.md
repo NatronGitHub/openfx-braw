@@ -42,18 +42,14 @@ The plug-in will search these locations and also ``PATH_TO_OFX_PLUGIN/Contents/R
 
 ## Usage
 
-Download [latest release](https://github.com/rodlie/openfx-braw/releases) of the plug-in and a version of the Blackmagic RAW SDK. Install the SDK then extract the openfx-braw-VERSION.zip file and copy ``BlackmagicRAW.ofx.bundle`` to the Natron OFX plug-in folder.
-
-In Natron you will now have a new node in ``Image/Readers/BlackmagicRAW`` for reading BRAW files.
-
-*This plug-in will need to be added to the allow list in Natron for proper reader integration, this will be done when the plug-in is declared stable on all platforms.*
+Download [latest release](https://github.com/NatronGitHub/openfx-braw/releases) of the plug-in and a version of the Blackmagic RAW SDK. Install the SDK then extract the openfx-braw-VERSION.zip file and copy ``BlackmagicRAW.ofx.bundle`` to the Natron OFX plug-in folder.
 
 ## Build
 
 Make sure OpenGL and OpenColorIO 1.1.1 libraries and include files are installed and usable from pkg-config, then:
 
 ```
-git clone https://github.com/rodlie/openfx-braw
+git clone https://github.com/NatronGitHub/openfx-braw
 cd openfx-braw
 git submodule update -i --recursive
 make CONFIG=release
