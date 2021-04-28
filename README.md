@@ -10,12 +10,12 @@ Blackmagic RAW is a modern, high performance, professional RAW codec that is ope
  * Blackmagic Design URSA Mini Pro G2
  * Blackmagic Design Pocket Cinema Camera 6K
  * Blackmagic URSA Broadcast
- * Blackmagic URSA Mini Pro 12K *(BRAW 2.0+)*
+ * Blackmagic URSA Mini Pro 12K *(experimental)*
  * Canon EOS C300 Mark II captured by Blackmagic Video Assist 12G HDR
  * Panasonic EVA1 captured by Blackmagic Video Assist 12G HDR
  * Sigma fp captured by Blackmagic Video Assist 12G HDR
  * Nikon Z 6 and Z 7 captured by Blackmagic Video Assist 12G HDR
- * Nikon Z 6II and Z 7II captured by Blackmagic Video Assist 12G HDR *(BRAW 2.0+)*
+ * Nikon Z 6II and Z 7II captured by Blackmagic Video Assist 12G HDR
 
 ## Requirements
 
@@ -29,27 +29,13 @@ Blackmagic RAW is a modern, high performance, professional RAW codec that is ope
 
 Blackmagic RAW SDK must be installed prior to usage.
 
-### Blackmagic RAW 1.8
-
-Known good version compatible with this plug-in.
-
- * [Windows](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Windows)
- * [Linux](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Linux)
- * [macOS](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Mac%20OS%20X)
-
-### Blackmagick RAW 2.0
-
-Limited testing has been done, should work.
-
- * [Windows](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Windows)
- * [Linux](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Linux)
- * [macOS](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Mac%20OS%20X)
-
+ * BRAW 2.0 SDK: [macOS](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Mac%20OS%20X) [Linux](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Linux) [Windows](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Windows)
+ * BRAW 1.8.2 SDK: [macOS](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Mac%20OS%20X) [Linux](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Linux) [Windows](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Windows)
 
 The Blackmagick RAW SDK will install the required library in the following locations:
 
 * Windows: ``PROGRAMFILES\Adobe\Common\Plug-ins\7.0\MediaCore\BlackmagicRawAPI``
-* Linux: ``/usr/lib/blackmagic/BlackmagicRAWSDK/Linux/Libraries``
+* Linux: ``/usr/lib64/blackmagic/BlackmagicRAWSDK/Linux/Libraries``
 * macOS: ``/Applications/Blackmagic RAW/Blackmagic RAW SDK/Mac/Libraries``
 
 The plug-in will search these locations and also ``PATH_TO_OFX_PLUGIN/Contents/Resources/BlackmagicRAW`` for the required library.
