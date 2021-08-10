@@ -10,7 +10,7 @@ Blackmagic RAW is a modern, high performance, professional RAW codec that is ope
  * Blackmagic Design URSA Mini Pro G2
  * Blackmagic Design Pocket Cinema Camera 6K
  * Blackmagic URSA Broadcast
- * Blackmagic URSA Mini Pro 12K *(experimental)*
+ * Blackmagic URSA Mini Pro 12K
  * Canon EOS C300 Mark II captured by Blackmagic Video Assist 12G HDR
  * Panasonic EVA1 captured by Blackmagic Video Assist 12G HDR
  * Sigma fp captured by Blackmagic Video Assist 12G HDR
@@ -20,17 +20,18 @@ Blackmagic RAW is a modern, high performance, professional RAW codec that is ope
 ## Requirements
 
 * Natron 2.4+
-* Blackmagic RAW SDK 1.8+
+* Blackmagic RAW SDK 2.1
 * Windows 10
 * macOS High Sierra *(10.13)* or greater
 * GNU/Linux *(Glibc 2.17+, libgcc 4.8.5+)*
 
 ## Blackmagic RAW SDK
 
-Blackmagic RAW SDK must be installed prior to usage.
+Blackmagic RAW SDK 2.1 must be installed prior to usage.
 
- * BRAW 2.0 SDK: [macOS](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Mac%20OS%20X) [Linux](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Linux) [Windows](https://www.blackmagicdesign.com/no/support/download/6307842705f14a5dbb99daa90212c4ba/Windows)
- * BRAW 1.8.2 SDK: [macOS](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Mac%20OS%20X) [Linux](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Linux) [Windows](https://www.blackmagicdesign.com/no/support/download/50dc232a8f8b45619ecf0d9a40f92c8d/Windows)
+ * [macOS](https://www.blackmagicdesign.com/support/download/ea11ce9660c642879612f363ca387c7f/Mac%20OS%20X)
+ * [Linux](https://www.blackmagicdesign.com/support/download/ea11ce9660c642879612f363ca387c7f/Linux)
+ * [Windows](https://www.blackmagicdesign.com/support/download/ea11ce9660c642879612f363ca387c7f/Windows)
 
 The Blackmagick RAW SDK will install the required library in the following locations:
 
