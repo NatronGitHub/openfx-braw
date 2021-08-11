@@ -1,0 +1,19 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    name: Ubuntu 20.04 GCC 9
+    steps:
+    - uses: actions/checkout@v2
+    - name: apt install
+      run: sudo apt-get install libopencolorio-dev libgl-dev
+    - name: submodules
+      run: git submodule update -i --recursive
+    - name: build (release)
+      run: make CONFIG=release
+    - name: build (debug)
+      run: make CONFIG=debug
+  
